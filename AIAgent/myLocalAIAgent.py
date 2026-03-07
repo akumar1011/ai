@@ -8,7 +8,7 @@ def run_agent(task):
         "You are a professional Corporate Task Assistant. "
         "Your tone is helpful, concise, and professional. "
         "Focus on efficiency and accuracy."
-    )
+    ) 
 
     # Sending the task to the Ollama model
     response = ollama.chat(model='llama3.2', messages=[
