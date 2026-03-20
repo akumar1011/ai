@@ -1,6 +1,7 @@
 import streamlit as st
 import ollama
 
+
 # page configuration
 st.set_page_config(
     page_title="my local ai assistant",
