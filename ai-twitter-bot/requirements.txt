@@ -1,0 +1,25 @@
+# Web automation
+playwright==1.41.0
+
+# AI/ML APIs
+groq==0.4.1
+requests==2.31.0
+
+# RSS parsing
+feedparser==6.0.10
+
+# Environment management
+python-dotenv==1.0.0
+
+# Scheduling
+schedule==1.2.0
+
+# Data handling
+pandas==2.1.4
+numpy==1.24.3
+
+# Logging and utilities
+loguru==0.7.2
+
+# HTTP client for Ollama
+httpx==0.25.2
