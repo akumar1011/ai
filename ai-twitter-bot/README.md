@@ -1,14 +1,14 @@
-# AI Twitter Bot 🤖
+# AI Twitter Bot
 
 A sophisticated AI-powered Twitter bot that automatically discovers, analyzes, and posts high-engagement AI and tech news. It uses multiple AI models to create compelling tweets from the best articles across 11+ news sources.
 
 ## What It Does
 
-- 📰 **Finds News**: Gets the latest AI and tech articles from multiple news websites
-- 🧠 **Creates Tweets**: Uses AI to write engaging tweets about the articles
-- 🐦 **Posts Automatically**: Shares tweets on your Twitter account without manual work
-- ⏰ **Smart Timing**: Posts at different times each day to look natural
-- 🔒 **Safe & Secure**: Works without needing Twitter's official API
+- **Finds News**: Gets the latest AI and tech articles from multiple news websites
+- **Creates Tweets**: Uses AI to write engaging tweets about the articles
+- **Posts Automatically**: Shares tweets on your Twitter account without manual work
+- **Smart Timing**: Posts at different times each day to look natural
+- **Safe & Secure**: Works without needing Twitter's official API
 
 ## Getting Started
 
@@ -78,49 +78,49 @@ AiAgentTweeting_v1/
 
 The bot uses a sophisticated AI-powered workflow to create high-quality tweets:
 
-### 📊 **Smart Article Selection Process**
+### **Smart Article Selection Process**
 1. **Multiple Sources**: Fetches articles from 11+ RSS feeds including MIT Technology Review, OpenAI, Google AI, Hugging Face, and more
 2. **Choose 5 Best**: Selects the 5 most promising articles based on engagement scoring
 3. **Pick Winner**: Chooses the single best article using AI engagement analysis
 
-### ✍️ **Intelligent Tweet Creation**
+### **Intelligent Tweet Creation**
 4. **Generate 5 Variations**: Creates 5 different tweet versions using Groq AI
 5. **Score Each Tweet**: Analyzes each variation for engagement potential (1-10 scale)
 6. **Select Best Tweet**: Picks the highest-scoring tweet variation
 7. **Polish Content**: Uses Ollama AI to refine and improve the selected tweet
 
-### 🔍 **Quality Assurance**
+### **Quality Assurance**
 8. **Duplicate Check**: Compares against recent tweets to avoid repetition
 9. **Length Validation**: Ensures tweet fits within character limits
 10. **Final Review**: Verifies content quality and engagement score
 
-### 🚀 **Smart Posting**
+### **Smart Posting**
 11. **Post to Twitter**: Automatically shares the tweet with article link
 12. **Save History**: Records tweet for future duplicate checking
 13. **Schedule Next**: Waits until the next scheduled posting time
 
 ## Settings You Can Change
 
-### 📰 **Content Settings**
+### **Content Settings**
 - **RSS_FEED_URLS**: Multiple news sources to follow (11 sources included)
 - **MAX_ARTICLES_PER_DAY**: How many articles to fetch (default: 5)
 - **MIN_ENGAGEMENT_SCORE**: Minimum engagement score for tweets (1-10 scale)
 - **MAX_TWEET_LENGTH**: Maximum characters per tweet (default: 280)
 
-### ⏰ **Timing Settings**
+### **Timing Settings**
 - **POST_TIME_HOUR/MINUTE**: What time to post each day
 - **RANDOM_DELAY_MINUTES**: How much to vary the posting time
 
-### 🔍 **Quality Control**
+### **Quality Control**
 - **DUPLICATE_CHECK_DAYS**: How many days back to check for duplicates (default: 3)
 - **ENABLE_HASHTAGS**: Whether to add hashtags to tweets
 - **MAX_HASHTAGS_PER_TWEET**: Maximum hashtags per tweet (default: 3)
 
 ## Changing News Sources
 
-**How Hard: Very Easy** 🟢
+**How Hard: Very Easy**
 
-### 🌐 **Built-in Sources**
+### **Built-in Sources**
 The bot comes with 11 high-quality RSS feeds:
 - MIT Technology Review (AI section)
 - Reddit Machine Learning & AI communities
@@ -133,12 +133,12 @@ The bot comes with 11 high-quality RSS feeds:
 - AI News
 - Wired AI
 
-### ⚙️ **Adding Custom Sources**
+### **Adding Custom Sources**
 1. **Update Config**: Edit `rss_feed_urls` list in `config.py`
 2. **Test Feed**: Run `python src/rss_aggregator.py` to verify it works
 3. **Monitor Quality**: Check engagement scores for new sources
 
-### 📊 **Source Selection**
+### **Source Selection**
 The bot automatically:
 - Randomly selects from available sources
 - Fetches multiple articles per run
