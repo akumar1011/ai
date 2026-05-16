@@ -1,6 +1,16 @@
 import streamlit as st
 import ollama
+from openai import OpenAI
+from groq import Groq
+from dotenv import load_dotenv
+import os
 
+# Load environment variables from .env file
+load_dotenv()
+
+# Initialize API clients
+openai_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 # page configuration
 st.set_page_config(
@@ -12,10 +22,13 @@ st.set_page_config(
 with st.sidebar:
 
     st.title("agent controls")
-    st.info("this assistant runs locally using ollama")
+    st.info("this assistant supports ollama, openai, and groq models")
 
     model_options = [
-        "llama3.2"
+        "llama3.2",  # Ollama
+        "gpt-4o",  # OpenAI
+        "gpt-4o-mini",  # OpenAI
+        "llama-3.3-70b-versatile" # Groq
     ]
 
     selected_model = st.selectbox(
@@ -34,7 +47,16 @@ if "messages" not in st.session_state:
 
 # main ui
 st.title("my private ai assistant")
-st.caption(f"model: {selected_model} | status: local & secure")
+
+# Determine provider based on selected model
+if selected_model.startswith("gpt"):
+    provider = "OpenAI"
+elif selected_model in ["llama-3.3-70b-versatile"]:
+    provider = "Groq"
+else:
+    provider = "Ollama (Local)"
+
+st.caption(f"model: {selected_model} | provider: {provider}")
 
 # display chat history
 for message in st.session_state.messages:
@@ -59,24 +81,56 @@ if prompt := st.chat_input("how can i help you today?"):
         full_response = ""
 
         try:
+            # Prepare messages for API call
+            api_messages = [
+                {"role": "system", "content": "you are a professional and helpful office assistant."},
+                *st.session_state.messages
+            ]
 
-            # call ollama with streaming enabled
-            stream = ollama.chat(
-                model=selected_model,
-                messages=[
-                    {"role": "system", "content": "you are a professional and helpful office assistant."},
-                    *st.session_state.messages
-                ],
-                stream=True
-            )
+            # Route to appropriate API based on selected model
+            if selected_model.startswith("gpt"):
+                # OpenAI API
+                stream = openai_client.chat.completions.create(
+                    model=selected_model,
+                    messages=api_messages,
+                    stream=True
+                )
 
-            # stream response token by token
-            for chunk in stream:
+                # Stream OpenAI response
+                for chunk in stream:
+                    if chunk.choices[0].delta.content is not None:
+                        content = chunk.choices[0].delta.content
+                        full_response += content
+                        response_placeholder.markdown(full_response + "▌")
 
-                content = chunk["message"]["content"]
-                full_response += content
+            elif selected_model in ["llama-3.3-70b-versatile", "mixtral-8x7b-32768"]:
+                # Groq API
+                stream = groq_client.chat.completions.create(
+                    model=selected_model,
+                    messages=api_messages,
+                    stream=True
+                )
 
-                response_placeholder.markdown(full_response + "▌")
+                # Stream Groq response
+                for chunk in stream:
+                    if chunk.choices[0].delta.content is not None:
+                        content = chunk.choices[0].delta.content
+                        full_response += content
+                        response_placeholder.markdown(full_response + "▌")
+
+            else:
+                # Ollama (local) API
+                stream = ollama.chat(
+                    model=selected_model,
+                    messages=api_messages,
+                    stream=True
+                )
+
+                # Stream Ollama response
+                for chunk in stream:
+                    content = chunk["message"]["content"]
+                    full_response += content
+                    response_placeholder.markdown(full_response + "▌")
 
             # finalize message
             response_placeholder.markdown(full_response)
@@ -87,6 +141,10 @@ if prompt := st.chat_input("how can i help you today?"):
             )
 
         except Exception as e:
-
             st.error(f"error: {e}")
-            st.info("ensure ollama is running and the model is installed.")
+            if selected_model.startswith("gpt"):
+                st.info("ensure your OpenAI API key is valid and set in .env")
+            elif selected_model in ["llama-3.3-70b-versatile"]:
+                st.info("ensure your Groq API key is valid and set in .env")
+            else:
+                st.info("ensure ollama is running and the model is installed.")
